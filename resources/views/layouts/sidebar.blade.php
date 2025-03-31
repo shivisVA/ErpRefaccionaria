@@ -33,40 +33,61 @@
                             <!-- Sidenav Heading (Addons)-->
                             <div class="sidenav-menu-heading">Plugins</div>
                             <!-- Sidenav Link (Products)-->
-                            <a class="nav-link" href="{{ route('products.index') }}">
-                                <div class="nav-link-icon"></div>
-                                Productos
-                            </a>
-                            <!-- Sidenav Link (Categories)-->
-                            <a class="nav-link" href="{{ route('categories.index') }}">
-                                <div class="nav-link-icon"></div>
-                                Categorias
-                            </a>
-                            <!-- Sidenav Link (Providers)-->
-                            <a class="nav-link" href="{{ route('providers.index') }}">
-                                <div class="nav-link-icon"></div>
-                                Proveedores
-                            </a>
-                            <!-- Sidenav Link (Clients)-->
-                            <a class="nav-link" href="{{ route('clients.index') }}">
-                                <div class="nav-link-icon"></div>
-                                Clientes
-                            </a>
-                            <!-- Sidenav Link (Ventas)-->
-                            <a class="nav-link" href="{{ route('sales.index') }}">
-                                <div class="nav-link-icon"></div>
-                                Ventas
-                            </a>
-                            <!-- Sidenav Link (Purchses)-->
-                            <a class="nav-link" href="{{ route('purchases.index') }}">
-                                <div class="nav-link-icon"></div>
-                                Compras
-                            </a>
-                             <!-- Sidenav Link (Users)-->
-                            <a class="nav-link" href="{{ route('users.index') }}">
-                                <div class="nav-link-icon"></div>
-                                Usuarios
-                            </a>
+                            @can('crud product')                            
+                                <a class="nav-link" href="{{ route('products.index') }}">
+                                    <div class="nav-link-icon"></div>
+                                    Productos
+                                </a>
+                            @endcan
+
+                            @can('crud category')
+                                <!-- Sidenav Link (Categories)-->
+                                <a class="nav-link" href="{{ route('categories.index') }}">
+                                    <div class="nav-link-icon"></div>
+                                    Categorias
+                                </a>
+                            @endcan
+                            
+                            @can('crud provider')
+                                <!-- Sidenav Link (Providers)-->
+                                <a class="nav-link" href="{{ route('providers.index') }}">
+                                    <div class="nav-link-icon"></div>
+                                    Proveedores
+                                </a>
+                            @endcan
+                            
+                            @can('crud client')
+                                <!-- Sidenav Link (Clients)-->
+                                <a class="nav-link" href="{{ route('clients.index') }}">
+                                    <div class="nav-link-icon"></div>
+                                    Clientes
+                                </a>
+                            @endcan
+                            
+                            @can('crud sale')
+                                <!-- Sidenav Link (Ventas)-->
+                                <a class="nav-link" href="{{ route('sales.index') }}">
+                                    <div class="nav-link-icon"></div>
+                                    Ventas
+                                </a>
+                            @endcan
+                            
+                            @can('crud purchase')
+                                <!-- Sidenav Link (Purchses)-->
+                                <a class="nav-link" href="{{ route('purchases.index') }}">
+                                    <div class="nav-link-icon"></div>
+                                    Compras
+                                </a>
+                            @endcan
+                            
+                            @role('admin')
+                                 <!-- Sidenav Link (Users)-->
+                                <a class="nav-link" href="{{ route('users.index') }}">
+                                    <div class="nav-link-icon"></div>
+                                    Usuarios
+                                </a>
+                            @endrole
+                            
                         </div>
                     </div>
                     <!-- Sidenav Footer-->

@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,20 +34,20 @@ Route::get('/', function () {
 
 Route::get('/dashboard',[DashboardController::class,'index'])->middleware(['auth', 'verified'])->name('index');
 
-Route::get('/categories',[CategoryController::class,'index'])->middleware(['auth', 'verified'])->name('categories.index');
+Route::get('/categories',[CategoryController::class,'index'])->middleware(['auth', 'verified', 'permission:crud category'])->name('categories.index');
 
-Route::get('/categories/create',[CategoryController::class,'create'])->middleware(['auth', 'verified'])->name('categories.create');
+Route::get('/categories/create',[CategoryController::class,'create'])->middleware(['auth', 'verified','permission:crud category'])->name('categories.create');
 
-Route::get('/categories/{category}/edit',[CategoryController::class,'edit'])->middleware(['auth', 'verified'])->name('categories.edit');
+Route::get('/categories/{category}/edit',[CategoryController::class,'edit'])->middleware(['auth', 'verified','permission:crud category'])->name('categories.edit');
 
-Route::post('/categories/',[CategoryController::class,'store'])->middleware(['auth', 'verified'])->name('categories.store');
+Route::post('/categories/',[CategoryController::class,'store'])->middleware(['auth', 'verified','permission:crud category'])->name('categories.store');
 
-Route::put('/categories/{category}',[CategoryController::class,'update'])->middleware(['auth','verified'])->name('categories.update');
+Route::put('/categories/{category}',[CategoryController::class,'update'])->middleware(['auth','verified', 'permission:crud category'])->name('categories.update');
 
-Route::delete('/categories/{category}',[CategoryController::class,'destroy'])->middleware(['auth','verified'])->name('categories.destroy');
+Route::delete('/categories/{category}',[CategoryController::class,'destroy'])->middleware(['auth','verified', 'permission:crud category'])->name('categories.destroy');
 
 /* Rutas para Proveedores*/
-Route::middleware(['auth','verified'])->group(function(){
+Route::middleware(['auth','verified', 'permission:crud provider'])->group(function(){
     Route::get('/providers',[ProviderController::class,'index'])->name('providers.index');
     Route::get('/providers/create',[ProviderController::class,'create'])->name('providers.create');
     Route::get('/providers/{provider}',[ProviderController::class,'edit'])->name('providers.edit');
@@ -57,7 +58,7 @@ Route::middleware(['auth','verified'])->group(function(){
 
 
 /* Rutas para Productos*/
-Route::middleware(['auth','verified'])->group(function(){
+Route::middleware(['auth','verified','permission:crud product'])->group(function(){
     Route::get('/products',[ProductController::class,'index'])->name('products.index');
     Route::get('/products/create',[ProductController::class,'create'])->name('products.create');
     Route::get('/products/{product}',[ProductController::class,'edit'])->name('products.edit');
@@ -68,7 +69,7 @@ Route::middleware(['auth','verified'])->group(function(){
 
 /*Rutas para Compras*/
 
-Route::middleware(['auth','verified'])->group(function(){
+Route::middleware(['auth','verified', 'permission:crud purchase'])->group(function(){
     Route::get('/purchases',[PurchaseController::class,'index'])->name('purchases.index');
     Route::get('/purchases/create',[PurchaseController::class,'create'])->name('purchases.create');
     Route::get('/purchases/show/{purchase}',[PurchaseController::class,'show'])->name('purchases.show');
@@ -78,7 +79,7 @@ Route::middleware(['auth','verified'])->group(function(){
 
 /*Rutas para Detalle de Compras*/
 
-Route::middleware(['auth','verified'])->group(function(){
+Route::middleware(['auth','verified','permission:crud purchase'])->group(function(){
     Route::get('/purchaseDetail/{purchase}',[PurchaseDetailController::class,'index'])->name('purchaseDetail.index');
     Route::post('/purchaseDetail/{purchase}',[PurchaseDetailController::class,'store'])->name('PurchaseDetail.store');
     Route::delete('/purchaseDetail/{purchaseDetail}',[PurchaseDetailController::class,'destroy'])->name('purchaseDetail.destroy');
@@ -86,7 +87,7 @@ Route::middleware(['auth','verified'])->group(function(){
 
 /*Rutas para Clientes*/
 
-Route::middleware(['auth','verified'])->group(function(){
+Route::middleware(['auth','verified', 'permission:crud client'])->group(function(){
     Route::get('/clients',[ClientController::class,'index'])->name('clients.index');
     Route::get('/clients/create',[ClientController::class,'create'])->name('clients.create');
     Route::get('/clients/{client}',[ClientController::class,'edit'])->name('clients.edit');
@@ -97,7 +98,7 @@ Route::middleware(['auth','verified'])->group(function(){
 
 /*Rutas para Ventas*/
 
-Route::middleware(['auth','verified'])->group(function(){
+Route::middleware(['auth','verified', 'permission:crud sale'])->group(function(){
     Route::get('sales',[SaleController::class,'index'])->name('sales.index');
     Route::get('sales/create',[SaleController::class,'create'])->name('sales.create');
     Route::post('sales/',[SaleController::class,'store'])->name('sales.store');
@@ -105,7 +106,7 @@ Route::middleware(['auth','verified'])->group(function(){
 });
 
 /*Rutas para Detalle de Ventas*/
-Route::middleware(['auth','verified'])->group(function(){
+Route::middleware(['auth','verified','permission:crud sale'])->group(function(){
     Route::get('saleDetails/{sale}',[SaleDetailController::class,'index'])->name('saleDetails.index');
     Route::get('saleDetails/create/{sale}',[SaleDetailController::class,'create'])->name('saleDetails.create');
     Route::post('saleDetails/{sale}',[SaleDetailController::class,'store'])->name('saleDetails.store');
@@ -113,7 +114,7 @@ Route::middleware(['auth','verified'])->group(function(){
 });
 
 /*Rutas para Usuarios*/
-Route::middleware(['auth','verified'])->group(function(){
+Route::middleware(['auth','verified', 'permission:crud user'])->group(function(){
     Route::get('/users',[UserController::class,'index'])->name('users.index');
     Route::get('/users/create',[UserController::class,'create'])->name('users.create');
     Route::post('/users/',[UserController::class,'store'])->name('users.store');
@@ -127,5 +128,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//Route::any('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 require __DIR__.'/auth.php';
